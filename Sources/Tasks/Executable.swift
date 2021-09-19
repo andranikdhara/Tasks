@@ -8,6 +8,10 @@
 import Foundation
 
 public protocol Executable {
-
-    func execute() -> Void
+    
+    associatedtype ExecutionResult
+    
+    typealias CompletionHandler = (_ result: TaskResult<ExecutionResult>) -> Void
+    
+    func execute(completionHandler: @escaping CompletionHandler)
 }

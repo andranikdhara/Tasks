@@ -16,7 +16,7 @@ public enum TaskState {
     case InProgress
 }
 
-public protocol TaskProtocol: Executable {
+public protocol TaskProtocol {
     
     var id    : UUID      { get }
     var state : TaskState { get }

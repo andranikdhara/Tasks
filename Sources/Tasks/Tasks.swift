@@ -3,14 +3,10 @@ import Foundation
 
 public class UploadTask: Task {
     
-    public typealias TaskResultType = Bool
+    public typealias ExecutionResult = Bool
     
     public var id                : UUID
     public var state             : TaskState
-    public var error             : Error?
-    public var result            : Bool?
-    
-    public lazy var completionHandler : CompletionHandler = self.onTaskCompleted(with:)
     
     public init() {
         
@@ -18,12 +14,12 @@ public class UploadTask: Task {
         self.state = .Pending
     }
     
-    public func execute() {
+    public func execute(completionHandler: CompletionHandler) {
         
         
     }
     
-    public func onTaskCompleted(with result: TaskResult<TaskResultType>) {
+    public func onTaskCompleted(with result: TaskResult<ExecutionResult>) {
         
         switch result {
         
@@ -51,7 +47,39 @@ public class Main {
         taskManager.add(task: task)
         taskManager.add(task: taskGroup)
         
-        task.execute()
-        taskGroup.execute()
+        task.execute { result in
+            
+            switch result {
+            
+                case .Success(let result):
+                    
+                    print(result)
+                    break
+                    
+                case .Failure(let error):
+                    
+                    print(error)
+                    break
+                
+            }
+        }
+        
+        taskGroup.execute { result in
+            
+            switch result {
+            
+                case .Success(let result):
+                    
+                    _ = result.successfulTasks
+                    _ = result.unsuccessfulTasks
+                    break
+                    
+                case .Failure(let error):
+                    
+                    print(error)
+                    break
+                
+            }
+        }
     }
 }

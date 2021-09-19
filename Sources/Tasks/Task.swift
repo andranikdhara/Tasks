@@ -13,13 +13,7 @@ public enum TaskResult<T> {
     case Failure(error: Error)
 }
 
-
-public protocol Task: TaskProtocol {
+public protocol Task: TaskProtocol, Executable {
     
-    associatedtype TaskResultType
-    
-    typealias CompletionHandler = (_ result: TaskResult<TaskResultType>) -> Void
-    
-    var completionHandler: CompletionHandler { get }
     
 }
